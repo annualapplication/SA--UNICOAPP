@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SA University & TVET Application Portal</title>
+<link rel="stylesheet" href="style.css">
+<!-- EmailJS SDK -->
+<script src="https://cdn.emailjs.com/sdk/3.2/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("OuKOpKFpXHJ1OTe-n"); 
+  })();
+</script>
+</head>
+<body>
+
+<header>
+  <h1>SA University & TVET Application Portal</h1>
+</header>
+
+<section id="loginSection">
+  <h2 id="formTitle">Login</h2>
+  <div id="errorMsg"></div>
+  <label for="emailInput">Email:</label>
+  <input type="email" id="emailInput" required>
+  <label for="passwordInput">Password:</label>
+  <input type="password" id="passwordInput" required>
+  <button id="submitBtn">Login</button>
+  <div id="switchForm">Don't have an account? Register here</div>
+</section>
+
+<section id="appSection" class="hidden">
+  <h2>Welcome to Your Application Portal</h2>
+  <p>Logged in as: <span id="userEmail"></span></p>
+  <button id="logoutBtn">Logout</button>
+
+  <h3 style="margin-top:30px;">Subject Selection & APS Calculator</h3>
+  <div id="subjectsContainer"></div>
+  <p><strong>Total APS:</strong> <span id="totalAps">0</span></p>
+
+  <h3 style="margin-top:30px;">Select Universities & TVETs by Province</h3>
+  <div id="universitiesList"></div>
+
+  <div id="nsfasSection" class="hidden">
+    <label for="nsfasSelect">Do you require NSFAS funding?</label>
+    <select id="nsfasSelect">
+      <option value="">Select an option</option>
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+  </div>
+
+  <button id="submitApplicationBtn" style="margin-top: 30px; background:#006400;">Submit Application</button>
+  <div id="appErrorMsg"></div>
+</section>
+
+<script src="app.js"></script>
+</body>
+</html>
