@@ -38,7 +38,7 @@ function calculateAPS(mark) {
 function buildSubjects() {
   subjectsContainer.innerHTML = '';
   subjects.forEach(subj => {
-    subjectsContainer.innerHTML += `<label>${subj} mark:</label><input type="number" min="0" max="100" data-subject="\${subj}" class="markInput">`;
+    subjectsContainer.innerHTML += `<label>${subj} mark:</label><input type="number" min="0" max="100" data-subject="${subj}" class="markInput">`;
   });
   subjectsContainer.addEventListener('input', updateAPS);
 }
@@ -93,16 +93,15 @@ const provinces = {
 function buildUniversities() {
   universitiesList.innerHTML = '';
   for (const province in provinces) {
-    universitiesList.innerHTML += `<div class="province-title">\${province}</div>`;
+    universitiesList.innerHTML += `<div class="province-title">${province}</div>`;
     provinces[province].forEach(inst => {
-      universitiesList.innerHTML += `<label><input type="checkbox" class="uniCheckbox" value="\${inst}"> \${inst}</label>`;
+      universitiesList.innerHTML += `<label><input type="checkbox" class="uniCheckbox" value="${inst}"> ${inst}</label>`;
     });
   }
 }
 
-// Send confirmation email on registration
 function sendConfirmationEmail(email, token) {
-  const confirmationLink = \`\${window.location.origin}?email=\${encodeURIComponent(email)}&token=\${token}\`;
+  const confirmationLink = `${window.location.origin}?email=${encodeURIComponent(email)}&token=${token}`;
   const templateParams = {
     to_email: email,
     confirmation_link: confirmationLink
@@ -110,7 +109,7 @@ function sendConfirmationEmail(email, token) {
   
   emailjs.send('service_2ytuwrb', 'template_dhpvtix', templateParams) 
     .then(() => {
-      alert(\`Confirmation email sent to \${email}. Please check your inbox.\`);
+      alert(`Confirmation email sent to ${email}. Please check your inbox.`);
     }, (error) => {
       alert('Failed to send confirmation email. Please try again later.');
       console.error('EmailJS error:', error);
@@ -131,6 +130,7 @@ function login(email, pass) {
       showError('Please confirm your email using the link sent to you.');
       return;
     }
+    sessionStorage.setItem('user', email); // Save logged-in user
     appSection.classList.remove('hidden');
     loginSection.classList.add('hidden');
     userEmail.textContent = email;
@@ -174,9 +174,11 @@ submitBtn.onclick = () => {
 };
 
 switchForm.onclick = toggleMode;
-logoutBtn.onclick = () => { location.reload(); };
+logoutBtn.onclick = () => { 
+  sessionStorage.removeItem('user'); // clear session
+  location.reload(); 
+};
 
-// Validate & send application data via EmailJS
 submitApplicationBtn.onclick = () => {
   appErrorMsg.textContent = '';
   const marks = document.querySelectorAll('.markInput');
@@ -186,7 +188,7 @@ submitApplicationBtn.onclick = () => {
     const val = input.value.trim();
     if (val !== '' && !isNaN(val) && Number(val) >= 0) {
       filledSubjectsCount++;
-      subjectMarks.push(\`\${input.dataset.subject}: \${val}\`);
+      subjectMarks.push(`${input.dataset.subject}: ${val}`);
     }
   });
 
@@ -195,7 +197,6 @@ submitApplicationBtn.onclick = () => {
     return;
   }
 
-  // Collect selected universities/TVETs
   const selectedInstitutions = [];
   document.querySelectorAll('.uniCheckbox:checked').forEach(cb => {
     selectedInstitutions.push(cb.value);
@@ -206,14 +207,12 @@ submitApplicationBtn.onclick = () => {
     return;
   }
 
-  // NSFAS selection
   const nsfasValue = nsfasSelect.value;
   if(nsfasValue === '') {
     appErrorMsg.textContent = 'Please select your NSFAS funding requirement.';
     return;
   }
 
-  // Prepare email data
   const emailParams = {
     to_email: userEmail.textContent,
     subject_marks: subjectMarks.join('\n'),
@@ -232,7 +231,6 @@ submitApplicationBtn.onclick = () => {
     });
 };
 
-// On page load: check email confirmation token
 window.onload = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const email = urlParams.get('email');
@@ -248,7 +246,6 @@ window.onload = () => {
     }
   }
 
-  // Auto login if session found
   const loggedInUser = sessionStorage.getItem('user');
   if (loggedInUser) {
     appSection.classList.remove('hidden');
