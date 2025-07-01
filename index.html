@@ -1,30 +1,53 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SA University & TVET Application Portal</title>
-<style>
-  body { font-family: Arial, sans-serif; background: #f4f7fc; color: #333; margin: 0; padding: 0; }
-  header { background: #003366; color: white; text-align: center; padding: 20px; }
-  section { max-width: 800px; margin: 40px auto; padding: 30px 40px; background: white; border-radius: 10px; box-shadow: 0 0 12px rgba(0,0,0,0.1); }
-  h2 { text-align: center; color: #003366; }
-  label { display: block; margin-top: 15px; font-weight: bold; }
-  input, select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; }
-  button { background: #003366; color: white; border: none; padding: 12px 20px; margin-top: 25px; border-radius: 5px; cursor: pointer; width: 100%; font-size: 16px; }
-  .hidden { display: none; }
-  .province-title { margin-top: 20px; font-size: 18px; font-weight: bold; color: #003366; border-bottom: 1px solid #003366; padding-bottom: 5px; }
-  #nsfasSection { margin-top: 25px; }
-  #errorMsg, #appErrorMsg { color: red; margin-top: 10px; font-size: 14px; font-weight: bold; }
-  #switchForm { margin-top: 15px; text-align: center; cursor: pointer; color: #003366; text-decoration: underline; }
-  .enquiries { margin-top: 40px; padding: 15px; background: #eef2f8; border-radius: 8px; }
-  .enquiries h3 { color: #003366; }
-  .enquiries a { color: #003366; text-decoration: none; display: block; margin-top: 8px; }
-</style>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.emailjs.com/sdk/3.2/email.min.js"></script>
+<script>(function(){ emailjs.init("OuKOpKFpXHJ1OTe-n"); })();</script>
 </head>
 <body>
 <header><h1>SA University & TVET Application Portal</h1></header>
-<section><p>Full HTML content goes here...</p></section>
+<section id="loginSection">
+<h2 id="formTitle">Login</h2>
+<div id="errorMsg"></div>
+<label for="contactInput">Email or WhatsApp Number:</label>
+<input type="text" id="contactInput" required>
+<label for="passwordInput">Password:</label>
+<input type="password" id="passwordInput" required>
+<label for="confirmPasswordInput" id="confirmLabel" class="hidden">Confirm Password:</label>
+<input type="password" id="confirmPasswordInput" class="hidden">
+<button id="submitBtn">Login</button>
+<div id="switchForm">Don't have an account? Register here</div>
+</section>
+<section id="appSection" class="hidden">
+<h2>Welcome to Your Application Portal</h2>
+<p>Logged in as: <span id="userContact"></span></p>
+<button id="logoutBtn">Logout</button>
+<h3>Subject Selection & APS Calculator</h3>
+<div id="subjectsContainer"></div>
+<p><strong>Total APS:</strong> <span id="totalAps">0</span></p>
+<h3>Select Universities & TVETs by Province</h3>
+<div id="universitiesList"></div>
+<div id="nsfasSection" class="hidden">
+<label for="nsfasSelect">Do you require NSFAS funding?</label>
+<select id="nsfasSelect">
+<option value="">Select an option</option>
+<option value="Yes">Yes</option>
+<option value="No">No</option>
+</select>
+</div>
+<button id="submitApplicationBtn">Send Application via WhatsApp</button>
+<div id="appErrorMsg"></div>
+<div class="enquiries">
+<h3>Enquiries & Support</h3>
+<a href="https://www.instagram.com/annualapplication592" target="_blank">Instagram</a>
+<a href="https://www.facebook.com/University application" target="_blank">Facebook</a>
+<a href="mailto:annualuniversapplication@gmail.com">Email</a>
+</div>
+</section>
+<script src="script.js"></script>
 </body>
 </html>
