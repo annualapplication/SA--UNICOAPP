@@ -1,54 +1,41 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SA University & TVET Application Portal</title>
 <link rel="stylesheet" href="style.css">
-<script src="https://cdn.emailjs.com/sdk/3.2/email.min.js"></script>
-<script>
-(function(){ emailjs.init("OuKOpKFpXHJ1OTe-n"); })();
-</script>
 </head>
 <body>
 <header><h1>SA University & TVET Application Portal</h1></header>
-<section id="loginSection">
-<h2 id="formTitle">Login</h2>
-<div id="errorMsg"></div>
-<label for="contactInput">Email or WhatsApp Number:</label>
-<input type="text" id="contactInput" required>
-<label for="passwordInput">Password:</label>
-<input type="password" id="passwordInput" required>
-<label for="confirmPasswordInput" id="confirmLabel" class="hidden">Confirm Password:</label>
-<input type="password" id="confirmPasswordInput" class="hidden">
-<button id="submitBtn">Login</button>
-<div id="switchForm">Don't have an account? Register here</div>
-</section>
-<section id="appSection" class="hidden">
-<h2>Welcome to Your Application Portal</h2>
-<p>Logged in as: <span id="userContact"></span></p>
-<button id="logoutBtn">Logout</button>
-<h3>Subject Selection & APS Calculator</h3>
-<div id="subjectsContainer"></div>
-<p><strong>Total APS:</strong> <span id="totalAps">0</span></p>
-<h3>Select Universities & TVETs by Province</h3>
-<div id="universitiesList"></div>
-<div id="nsfasSection" class="hidden">
-<label for="nsfasSelect">Do you require NSFAS funding?</label>
-<select id="nsfasSelect">
-<option value="">Select an option</option>
-<option value="Yes">Yes</option>
-<option value="No">No</option>
-</select>
-</div>
-<button id="submitApplicationBtn">Send Application via WhatsApp</button>
-<div id="appErrorMsg"></div>
-<div class="enquiries">
-<h3>Enquiries & Support</h3>
-<a href="https://www.instagram.com/annualapplication592" target="_blank">Instagram</a>
-<a href="https://www.facebook.com/University application" target="_blank">Facebook</a>
-<a href="mailto:annualuniversapplication@gmail.com">Email</a>
-</div>
+<section id="appSection">
+
+  <div class="step" id="step1">
+    <h2>Step 1: Personal & Contact Details</h2>
+    <label>Full Name:</label><input id="fullName" required>
+    <label>WhatsApp Number:</label><input id="contact" placeholder="e.g. 0781234567" required>
+    <button onclick="nextStep(2)">Next</button>
+  </div>
+
+  <div class="step" id="step2">
+    <h2>Step 2: Subjects & APS</h2>
+    <div id="subjectsContainer"></div>
+    <button onclick="addSubject()">Add Another Subject</button>
+    <p><strong>Total APS:</strong> <span id="totalAps">0</span></p>
+    <button onclick="prevStep(1)">Back</button>
+    <button onclick="nextStep(3)">Next</button>
+  </div>
+
+  <div class="step" id="step3">
+    <h2>Step 3: Select Institutions & NSFAS</h2>
+    <div id="universitiesList"></div>
+    <label style="margin-top:20px;">NSFAS funding?</label>
+    <select id="nsfasSelect"><option value="">Choose</option><option>Yes</option><option>No</option></select>
+    <div id="errorMsg"></div>
+    <button onclick="prevStep(2)">Back</button>
+    <button id="submitApplicationBtn">Send Application via WhatsApp</button>
+  </div>
+
 </section>
 <script src="script.js"></script>
 </body>
