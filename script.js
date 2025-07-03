@@ -1,3 +1,2 @@
-
-// Full working JavaScript code here based on your last version with correct button IDs
-// Due to size, I will paste the logic separately if requested
+// JavaScript content will be placed here (same as in the HTML <script> section)
+console.log("JS loaded");  // Replace with actual JS from the HTML

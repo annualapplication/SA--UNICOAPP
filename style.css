@@ -1,7 +1,21 @@
-
-body { font-family: Arial, sans-serif; background:#f0f2f5; color:#333; margin:0; padding:0; }
-header { background:#003366; color:white; text-align:center; padding:20px; }
-section { max-width:850px; margin:30px auto; padding:25px; background:white; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.1); }
-.step { display:none; }
-button { margin-top:20px; padding:10px; background:#006400; color:white; border:none; border-radius:5px; cursor:pointer; }
-.note { background:#e0f7fa; padding:10px; border-left:4px solid #0097a7; margin:10px 0; }
+body {
+  background: linear-gradient(to bottom right, #f0f0f0, #e6f0ff);
+  padding: 20px;
+}
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  animation: fadeIn 1s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.province-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #0055a5;
+  margin-top: 20px;
+}
