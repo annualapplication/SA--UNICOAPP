@@ -2,40 +2,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SA University & TVET Application Portal</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><h1>SA University & TVET Application Portal</h1></header>
 <section id="appSection">
-
   <div class="step" id="step1">
-    <h2>Step 1: Personal & Contact Details</h2>
-    <label>Full Name:</label><input id="fullName" required>
-    <label>WhatsApp Number:</label><input id="contact" placeholder="e.g. 0781234567" required>
+    <h2>Step 1: Personal Details</h2>
+    <label>Full Name:</label>
+    <input id="fullName" placeholder="Enter your full name" required>
+    <label>WhatsApp Number:</label>
+    <input id="contact" placeholder="e.g. 0781234567" required>
     <button onclick="nextStep(2)">Next</button>
   </div>
-
   <div class="step" id="step2">
-    <h2>Step 2: Subjects & APS</h2>
+    <h2>Step 2: Academic Results</h2>
+    <div class="note">
+      <strong>Note:</strong> If you are in Grade 12, enter Grade 11 Final Results.<br>
+      If you've completed Matric, enter your Final Matric Results.
+    </div>
+    <label>Results Type:</label>
+    <select id="resultsSelect">
+      <option value="">Select</option>
+      <option>Grade 11</option>
+      <option>Grade 12</option>
+    </select>
     <div id="subjectsContainer"></div>
     <button onclick="addSubject()">Add Another Subject</button>
     <p><strong>Total APS:</strong> <span id="totalAps">0</span></p>
+    <p><strong>Estimated Application Fees:</strong> R<span id="totalFee">0</span></p>
     <button onclick="prevStep(1)">Back</button>
     <button onclick="nextStep(3)">Next</button>
   </div>
-
   <div class="step" id="step3">
-    <h2>Step 3: Select Institutions & NSFAS</h2>
+    <h2>Step 3: Institutions & NSFAS</h2>
     <div id="universitiesList"></div>
-    <label style="margin-top:20px;">NSFAS funding?</label>
-    <select id="nsfasSelect"><option value="">Choose</option><option>Yes</option><option>No</option></select>
+    <label>NSFAS Funding:</label>
+    <select id="nsfasSelect">
+      <option value="">Select</option>
+      <option>Yes</option>
+      <option>No</option>
+    </select>
     <div id="errorMsg"></div>
     <button onclick="prevStep(2)">Back</button>
-    <button id="submitApplicationBtn">Send Application via WhatsApp</button>
+    <button id="submitApplicationBtn">Submit via WhatsApp</button>
   </div>
-
 </section>
 <script src="script.js"></script>
 </body>
