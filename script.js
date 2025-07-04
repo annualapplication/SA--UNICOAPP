@@ -1,4 +1,3 @@
-
 const provinces = {
   "Gauteng": [
     {name: "University of Pretoria", fee: 300},
@@ -78,13 +77,23 @@ function updateAPS() {
   document.getElementById('totalAps').textContent = total;
 }
 
+document.addEventListener('input', function(e) {
+  if (e.target.matches('#subjectsContainer input[type=number]')) {
+    updateAPS();
+  }
+});
+
 function filterInstitutions() {
   const input = document.getElementById("searchBar").value.toLowerCase();
-  const blocks = document.querySelectorAll(".province-title");
-  blocks.forEach(title => {
-    const parent = title.closest('.col-12');
-    const match = parent.innerText.toLowerCase().includes(input);
-    parent.style.display = match ? 'block' : 'none';
+  const institutionDivs = document.querySelectorAll("#institutionsContainer > .col-12");
+
+  institutionDivs.forEach(block => {
+    const text = block.innerText.toLowerCase();
+    if (text.includes(input)) {
+      block.style.display = 'block';
+    } else {
+      block.style.display = 'none';
+    }
   });
 }
 
@@ -122,11 +131,12 @@ function submitApplication() {
   }
 
   const msg = `SA Application:\nName: ${name}\nWhatsApp: ${contact}\nResults: ${resultsType}\nSubjects:\n${subjects.join('\n')}\nAPS: ${aps}\nInstitutions:\n${institutions.join('\n')}\nTotal Estimated Fees: R${totalFee}\nNSFAS: ${nsfas}`;
+  console.log(msg);
   window.open(`https://wa.me/27683683912?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 window.onload = () => {
   addSubject();
   buildInstitutions();
-  document.getElementById('subjectsContainer').addEventListener('input', updateAPS);
+  updateAPS();
 };
