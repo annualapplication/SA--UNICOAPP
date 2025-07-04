@@ -1,3 +1,4 @@
+
 const provinces = {
   "Gauteng": [
     {name: "University of Pretoria", fee: 300},
@@ -17,7 +18,8 @@ const provinces = {
     {name: "Durban University of Technology", fee: 250},
     {name: "Mangosuthu University of Technology", fee: 250},
     {name: "Coastal KZN TVET College", fee: 0},
-    {name: "Elangeni TVET College", fee: 0}
+    {name: "Elangeni TVET College", fee: 0},
+    {name: "Umngungundlovu TVET college", fee: 0}
   ],
   "Eastern Cape": [
     {name: "Nelson Mandela University", fee: 0},
@@ -42,6 +44,7 @@ const provinces = {
   ],
   "North West": [
     {name: "North-West University", fee: 100},
+    {name: "Vaal University", fee: 110},
     {name: "Vuselela TVET College", fee: 0}
   ],
   "Northern Cape": [
@@ -53,11 +56,15 @@ const provinces = {
 function addSubject() {
   const container = document.getElementById('subjectsContainer');
   const row = document.createElement('div');
-  row.className = 'row g-2';
+  row.className = 'row g-2 subject-row';
   row.innerHTML = `
     <div class="col-md-6"><input type="text" class="form-control mb-2" placeholder="Subject"></div>
     <div class="col-md-6"><input type="number" class="form-control mb-2" placeholder="Mark"></div>`;
   container.appendChild(row);
+
+  row.querySelectorAll('input[type="number"]').forEach(input => {
+    input.addEventListener('input', updateAPS);
+  });
 }
 
 function calculateAPS(mark) {
@@ -77,23 +84,17 @@ function updateAPS() {
   document.getElementById('totalAps').textContent = total;
 }
 
-document.addEventListener('input', function(e) {
-  if (e.target.matches('#subjectsContainer input[type=number]')) {
-    updateAPS();
-  }
-});
-
 function filterInstitutions() {
   const input = document.getElementById("searchBar").value.toLowerCase();
-  const institutionDivs = document.querySelectorAll("#institutionsContainer > .col-12");
-
-  institutionDivs.forEach(block => {
-    const text = block.innerText.toLowerCase();
-    if (text.includes(input)) {
-      block.style.display = 'block';
-    } else {
-      block.style.display = 'none';
-    }
+  const provinceDivs = document.querySelectorAll("#institutionsContainer > .col-12");
+  provinceDivs.forEach(col => {
+    let found = false;
+    col.querySelectorAll('.form-check-label').forEach(label => {
+      const match = label.textContent.toLowerCase().includes(input);
+      label.parentElement.style.display = match ? 'block' : 'none';
+      if (match) found = true;
+    });
+    col.style.display = found ? 'block' : 'none';
   });
 }
 
@@ -109,6 +110,16 @@ function buildInstitutions() {
       ).join('');
     container.appendChild(col);
   }
+
+  document.querySelectorAll('.university').forEach(cb => {
+    cb.addEventListener('change', updateTotalFee);
+  });
+}
+
+function updateTotalFee() {
+  const checkboxes = Array.from(document.querySelectorAll('.university:checked'));
+  const totalFee = checkboxes.reduce((sum, cb) => sum + parseFloat(cb.dataset.fee), 0);
+  document.getElementById('totalFee').textContent = totalFee;
 }
 
 function submitApplication() {
@@ -131,12 +142,12 @@ function submitApplication() {
   }
 
   const msg = `SA Application:\nName: ${name}\nWhatsApp: ${contact}\nResults: ${resultsType}\nSubjects:\n${subjects.join('\n')}\nAPS: ${aps}\nInstitutions:\n${institutions.join('\n')}\nTotal Estimated Fees: R${totalFee}\nNSFAS: ${nsfas}`;
-  console.log(msg);
   window.open(`https://wa.me/27683683912?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 window.onload = () => {
   addSubject();
   buildInstitutions();
-  updateAPS();
+  updateTotalFee();
+  document.getElementById('subjectsContainer').addEventListener('input', updateAPS);
 };
