@@ -1,5 +1,4 @@
 
-// PROVINCE DATA
 const provinces = {
   "Gauteng": [
     {name: "University of Pretoria", fee: 300},
@@ -20,7 +19,7 @@ const provinces = {
     {name: "Mangosuthu University of Technology", fee: 250},
     {name: "Coastal KZN TVET College", fee: 0},
     {name: "Elangeni TVET College", fee: 0},
-    {name: "Umngungundlovu TVET college", fee : 0}
+    {name: "Umngungundlovu TVET college", fee: 0}
   ],
   "Eastern Cape": [
     {name: "Nelson Mandela University", fee: 0},
@@ -62,6 +61,7 @@ function addSubject() {
     <div class="col-md-6"><input type="text" class="form-control mb-2" placeholder="Subject"></div>
     <div class="col-md-6"><input type="number" class="form-control mb-2" placeholder="Mark"></div>`;
   container.appendChild(row);
+
   row.querySelectorAll('input[type="number"]').forEach(input => {
     input.addEventListener('input', updateAPS);
   });
@@ -143,31 +143,6 @@ function submitApplication() {
 
   const msg = `SA Application:\nName: ${name}\nWhatsApp: ${contact}\nResults: ${resultsType}\nSubjects:\n${subjects.join('\n')}\nAPS: ${aps}\nInstitutions:\n${institutions.join('\n')}\nTotal Estimated Fees: R${totalFee}\nNSFAS: ${nsfas}`;
   window.open(`https://wa.me/27683683912?text=${encodeURIComponent(msg)}`, '_blank');
-
-  generateReferral(name);
-}
-
-function generateReferral(name) {
-  const link = `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(name)}`;
-  document.getElementById('refLink').value = link;
-  document.getElementById('referralSection').classList.remove("d-none");
-  document.getElementById('qrcode').innerHTML = "";
-  new QRCode(document.getElementById('qrcode'), {
-    text: link,
-    width: 128,
-    height: 128,
-    colorDark: "#000000",
-    colorLight: "#ffffff",
-    correctLevel: QRCode.CorrectLevel.H
-  });
-}
-
-function downloadQR() {
-  const canvas = document.querySelector('#qrcode canvas');
-  const link = document.createElement('a');
-  link.download = "referral_qr.png";
-  link.href = canvas.toDataURL();
-  link.click();
 }
 
 window.onload = () => {
