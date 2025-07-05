@@ -147,3 +147,22 @@ function initPage() {
   buildInstitutions();
   document.getElementById('subjectsContainer').addEventListener('input', updateAPS);
 }
+
+
+function checkReferralDiscount() {
+  const referrals = localStorage.getItem("referrals") || 0;
+  const discount = referrals >= 3 ? 100 : 200;
+  alert("Application fee is R" + discount + (referrals >= 3 ? " because you referred " + referrals + " people." : ". Refer 3 to get 50% discount."));
+  return discount;
+}
+
+// Override submitApplication to include discount check
+const originalSubmit = submitApplication;
+submitApplication = function() {
+  const name = document.getElementById('fullName').value.trim();
+  const contact = document.getElementById('contactNumber').value.trim();
+  const discount = checkReferralDiscount();
+
+  // proceed with original logic
+  originalSubmit();
+};
