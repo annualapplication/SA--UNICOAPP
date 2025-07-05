@@ -1,4 +1,5 @@
 
+// PROVINCE DATA
 const provinces = {
   "Gauteng": [
     {name: "University of Pretoria", fee: 300},
@@ -14,12 +15,12 @@ const provinces = {
     {name: "Northlink TVET College", fee: 0}
   ],
   "KwaZulu-Natal": [
-    {note: "Note: You only pay one application fee (R250) via CAO for all universities in KwaZulu-Natal."},
     {name: "University of KwaZulu-Natal", fee: 250},
     {name: "Durban University of Technology", fee: 250},
     {name: "Mangosuthu University of Technology", fee: 250},
     {name: "Coastal KZN TVET College", fee: 0},
-    {name: "Elangeni TVET College", fee: 0}
+    {name: "Elangeni TVET College", fee: 0},
+    {name: "Umngungundlovu TVET college", fee : 0}
   ],
   "Eastern Cape": [
     {name: "Nelson Mandela University", fee: 0},
@@ -43,7 +44,8 @@ const provinces = {
     {name: "Ehlanzeni TVET College", fee: 0}
   ],
   "North West": [
-    {name: "North-West University", fee: 0},
+    {name: "North-West University", fee: 100},
+    {name: "Vaal University", fee: 110},
     {name: "Vuselela TVET College", fee: 0}
   ],
   "Northern Cape": [
@@ -55,11 +57,14 @@ const provinces = {
 function addSubject() {
   const container = document.getElementById('subjectsContainer');
   const row = document.createElement('div');
-  row.className = 'row g-2';
+  row.className = 'row g-2 subject-row';
   row.innerHTML = `
     <div class="col-md-6"><input type="text" class="form-control mb-2" placeholder="Subject"></div>
     <div class="col-md-6"><input type="number" class="form-control mb-2" placeholder="Mark"></div>`;
   container.appendChild(row);
+  row.querySelectorAll('input[type="number"]').forEach(input => {
+    input.addEventListener('input', updateAPS);
+  });
 }
 
 function calculateAPS(mark) {
@@ -81,11 +86,15 @@ function updateAPS() {
 
 function filterInstitutions() {
   const input = document.getElementById("searchBar").value.toLowerCase();
-  const blocks = document.querySelectorAll(".province-title");
-  blocks.forEach(title => {
-    const parent = title.closest('.col-12');
-    const match = parent.innerText.toLowerCase().includes(input);
-    parent.style.display = match ? 'block' : 'none';
+  const provinceDivs = document.querySelectorAll("#institutionsContainer > .col-12");
+  provinceDivs.forEach(col => {
+    let found = false;
+    col.querySelectorAll('.form-check-label').forEach(label => {
+      const match = label.textContent.toLowerCase().includes(input);
+      label.parentElement.style.display = match ? 'block' : 'none';
+      if (match) found = true;
+    });
+    col.style.display = found ? 'block' : 'none';
   });
 }
 
@@ -95,19 +104,13 @@ function buildInstitutions() {
   for (let province in provinces) {
     const col = document.createElement('div');
     col.className = 'col-12';
-    col.innerHTML = `<div class='province-title'>${province}</div>`;
-    provinces[province].forEach(i => {
-      if (i.note) {
-        col.innerHTML += `<p class='text-info'><em>${i.note}</em></p>`;
-      } else {
-        col.innerHTML += `<div class='form-check'>
-          <input type='checkbox' class='form-check-input university' data-fee='${i.fee}' value='${i.name}'>
-          <label class='form-check-label'>${i.name} (R${i.fee})</label>
-        </div>`;
-      }
-    });
+    col.innerHTML = `<div class='province-title'>${province}</div>` +
+      provinces[province].map(i =>
+        `<div class='form-check'><input type='checkbox' class='form-check-input university' data-fee='${i.fee}' value='${i.name}'><label class='form-check-label'>${i.name} (R${i.fee})</label></div>`
+      ).join('');
     container.appendChild(col);
   }
+
   document.querySelectorAll('.university').forEach(cb => {
     cb.addEventListener('change', updateTotalFee);
   });
@@ -140,29 +143,36 @@ function submitApplication() {
 
   const msg = `SA Application:\nName: ${name}\nWhatsApp: ${contact}\nResults: ${resultsType}\nSubjects:\n${subjects.join('\n')}\nAPS: ${aps}\nInstitutions:\n${institutions.join('\n')}\nTotal Estimated Fees: R${totalFee}\nNSFAS: ${nsfas}`;
   window.open(`https://wa.me/27683683912?text=${encodeURIComponent(msg)}`, '_blank');
+
+  generateReferral(name);
 }
 
-function initPage() {
-  alert("To process your application, you must pay R200.");
+function generateReferral(name) {
+  const link = `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(name)}`;
+  document.getElementById('refLink').value = link;
+  document.getElementById('referralSection').classList.remove("d-none");
+  document.getElementById('qrcode').innerHTML = "";
+  new QRCode(document.getElementById('qrcode'), {
+    text: link,
+    width: 128,
+    height: 128,
+    colorDark: "#000000",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+}
+
+function downloadQR() {
+  const canvas = document.querySelector('#qrcode canvas');
+  const link = document.createElement('a');
+  link.download = "referral_qr.png";
+  link.href = canvas.toDataURL();
+  link.click();
+}
+
+window.onload = () => {
+  addSubject();
   buildInstitutions();
+  updateTotalFee();
   document.getElementById('subjectsContainer').addEventListener('input', updateAPS);
-}
-
-
-function checkReferralDiscount() {
-  const referrals = localStorage.getItem("referrals") || 0;
-  const discount = referrals >= 3 ? 100 : 200;
-  alert("Application fee is R" + discount + (referrals >= 3 ? " because you referred " + referrals + " people." : ". Refer 3 to get 50% discount."));
-  return discount;
-}
-
-// Override submitApplication to include discount check
-const originalSubmit = submitApplication;
-submitApplication = function() {
-  const name = document.getElementById('fullName').value.trim();
-  const contact = document.getElementById('contactNumber').value.trim();
-  const discount = checkReferralDiscount();
-
-  // proceed with original logic
-  originalSubmit();
 };
