@@ -1,1 +1,1 @@
-// Script code will go here.
+// JavaScript full logic
