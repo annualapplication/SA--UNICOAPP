@@ -6,24 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body onload="initPage()">
 
-<header>
+<header class="sticky-top">
   <h1>SA University & TVET Application</h1>
   <p>Your simplified way to apply to universities and TVET colleges in South Africa</p>
 </header>
 
 <div class="container">
-
   <div class="about-section">
     <h4>Why Use This Website?</h4>
-    <p>
-      We understand how confusing the university and TVET application process can be. This portal is designed to make your application journey easier, quicker, and stress-free.
-      With one simple form, you can calculate your APS score, select your preferred institutions, check total application fees, and submit everything via WhatsApp.
-      Let us assist you every step of the way towards your educational goals!
-    </p>
+    <p>We understand how confusing the university and TVET application process can be... Let us assist you every step of the way towards your educational goals!</p>
   </div>
 
   <h2 class="text-center text-primary mb-4">Application Form</h2>
@@ -37,10 +32,10 @@
     <label class="form-label">Full Name</label>
     <input type="text" id="fullName" class="form-control" placeholder="Enter your full name" required>
   </div>
-
+  
   <div class="mb-3">
     <label class="form-label">Email address</label>
-    <input type="text" id="Email Address" class="form-control" placeholder="Enter your Email Address" required>
+    <input type="email" id="emailAddress" class="form-control" placeholder="Enter your Email Address" required>
   </div>
 
   <div class="mb-3">
@@ -79,7 +74,7 @@
 
   <div class="mb-3">
     <label class="form-label">Search Institutions</label>
-    <input type="text" id="searchBar" class="form-control" placeholder="Search for a university or college..." onkeyup="filterInstitutions()">
+    <input type="text" id="searchBar" class="form-control" placeholder="Search..." onkeyup="filterInstitutions()">
   </div>
 
   <div class="row" id="institutionsContainer"></div>
@@ -90,12 +85,26 @@
   <hr>
   <h5 class="text-center mt-4">Follow Us On Social Media</h5>
   <div class="d-flex justify-content-center social-icons mb-4">
-    <a href="https://facebook.com/SAapply" target="_blank" class="facebook-icon"><i class="bi bi-facebook"></i></a>
-    <a href="https://instagram.com/univ.ersitytvet" target="_blank" class="instagram-icon"><i class="bi bi-instagram"></i></a>
-    <a href="https://tiktok.com/@annualapplication" target="_blank" class="tiktok-icon"><i class="bi bi-tiktok"></i></a>
+    <a href="#" class="facebook-icon"><i class="bi bi-facebook"></i></a>
+    <a href="#" class="instagram-icon"><i class="bi bi-instagram"></i></a>
+    <a href="#" class="tiktok-icon"><i class="bi bi-tiktok"></i></a>
   </div>
 </div>
 
+<!-- Toast Notification -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+  <div id="liveToast" class="toast bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-success text-white">
+      <strong class="me-auto">Application</strong>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      Application sent via WhatsApp!
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
