@@ -1,21 +1,170 @@
+/* Reset some default styles */
+* {
+  box-sizing: border-box;
+}
+
 body {
+  font-family: Arial, sans-serif;
   background: linear-gradient(to bottom right, #f0f0f0, #e6f0ff);
-  padding: 20px;
+  margin: 0;
+  padding: 0;
+  color: #222;
 }
-header {
-  background: linear-gradient(90deg, #0055a5, #0a87ff);
-  color: white;
-  padding: 30px;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-  margin-bottom: 30px;
-}
-header h1 { font-size: 2.5rem; }
+
 .container {
-  background: white;
+  max-width: 700px;
+  margin: 40px auto;
+  background: #fff;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
-.toast { min-width: 250px; }
+
+header {
+  background: linear-gradient(90deg, #0055a5, #0a87ff);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header h1 {
+  margin: 0 0 10px 0;
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+header button {
+  background: white;
+  border: none;
+  color: #0055a5;
+  font-size: 1.1rem;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+header button:hover {
+  background: #cce0ff;
+}
+
+.form-control,
+.form-select {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  border: 1.8px solid #ddd;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #0a87ff;
+  box-shadow: 0 0 8px #a7cdfc;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.btn-primary {
+  background-color: #0a87ff;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #006ecc;
+}
+
+.btn-secondary {
+  background-color: #ccc;
+  color: #333;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #aaa;
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  background-color: #1e7e34;
+}
+
+.btn-info {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.btn-info:hover:not(:disabled) {
+  background-color: #117a8b;
+}
+
+.note {
+  background: #e7f0fe;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-left: 5px solid #0a87ff;
+  border-radius: 6px;
+  color: #004a99;
+}
+
+.error-msg {
+  color: red;
+  font-size: 0.85rem;
+  margin-left: 10px;
+  display: none;
+}
+
+/* Dark Mode */
+body.dark-mode {
+  background: #121212;
+  color: #eee;
+}
+
+body.dark-mode .container {
+  background: #222;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+}
+
+body.dark-mode header {
+  background: linear-gradient(90deg, #002f6c, #0055a5);
+}
+
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+  background: #333;
+  border-color: #555;
+  color: #eee;
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus {
+  border-color: #1e90ff;
+  box-shadow: 0 0 8px #4b9cff;
+}
+
+body.dark-mode .btn-primary {
+  background-color: #1e90ff;
+}
+
+body.dark-mode .btn-primary:hover:not(:disabled) {
+  background-color: #1a78d7;
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SA University Application Portal</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+</head>
+<body onload="initPage()">
+
+  <header>
+    <h1>University & TVET Application Portal</h1>
+    <button id="darkModeToggle" onclick="toggleDarkMode()">🌙 Toggle Dark Mode</button>
+  </header>
+
+  <main class="container">
+    <form id="applicationForm">
+
+      <!-- Step 1 -->
+      <div class="step" id="step1">
+        <h2>Step 1: Personal Info</h2>
+        <div class="mb-3">
+          <label for="fullname">Full Name *</label>
+          <input type="text" id="fullname" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label for="email">Email Address (optional)</label>
+          <input type="email" id="email" class="form-control" />
+        </div>
+        <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next</button>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step" id="step2" style="display:none;">
+        <h2>Step 2: Academic Results</h2>
+        <div class="note">
+          <strong>Note:</strong> If you are currently in Grade 12, enter your <strong>Grade 11 Final Results</strong>.<br />
+          If you've completed Matric, enter your <strong>Final Matric Results</strong>.
+        </div>
+        <label for="resultsSelect">Results Type *</label>
+        <select id="resultsSelect" class="form-select mb-3" required>
+          <option value="">Select</option>
+          <option>Grade 11</option>
+          <option>Grade 12</option>
+        </select>
+        <div id="subjectsContainer"></div>
+        <button type="button" onclick="addSubject()" class="btn btn-outline-primary mt-2 mb-3">Add Another Subject</button>
+
+        <p><strong>Total APS:</strong> <span id="totalAps">0</span></p>
+        <p><strong>Estimated Application Fees:</strong> R<span id="totalFee">0</span></p>
+
+        <button type="button" class="btn btn-secondary" onclick="prevStep(1)">Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextStep(3)">Next</button>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step" id="step3" style="display:none;">
+        <h2>Step 3: Institutions & NSFAS</h2>
+
+        <div id="universitiesList"></div>
+
+        <label for="nsfasSelect">NSFAS Funding *</label>
+        <select id="nsfasSelect" class="form-select mb-3" required>
+          <option value="">Select</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+
+        <input type="hidden" id="trackingId" />
+
+        <p><strong>Total Application Fee:</strong> R<span id="totalFee">0</span></p>
+
+        <button type="button" class="btn btn-secondary" onclick="prevStep(2)">Back</button>
+        <button type="submit" class="btn btn-success">Submit Application</button>
+        <button type="button" id="downloadBtn" class="btn btn-info">Download PDF</button>
+        <button type="button" id="whatsappBtn" class="btn btn-primary">Send via WhatsApp</button>
+      </div>
+
+    </form>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
