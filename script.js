@@ -1,4 +1,7 @@
-// Provinces and institutions with fees
+document.getElementById("darkModeToggle").addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+});
+
 const provinces = {
   "Gauteng": [
     { name: "University of Pretoria", fee: 300 },
@@ -66,138 +69,115 @@ const provinces = {
   ]
 };
 
-// Globals
 let currentStep = 1;
 
 function initPage() {
   generateTrackingID();
   buildUniversitiesList();
-  addSubject(); // Add initial subject input
+  addSubject();
   setupEventListeners();
   updateTotalFee();
   updateAPS();
-  renderQRCode();
-
-  // Show only step 1 at start
+  addTermsAndConditions();
+  enhanceUniversityListDisplay();
   showStep(1);
 }
 
 function setupEventListeners() {
-  document.getElementById('applicationForm').addEventListener('submit', submitApplication);
-  document.getElementById('downloadBtn').addEventListener('click', downloadPDF);
-  document.getElementById('whatsappBtn').addEventListener('click', sendWhatsApp);
-  document.getElementById('resultsSelect').addEventListener('change', () => {
+  document.getElementById("applicationForm").addEventListener("submit", submitApplication);
+  document.getElementById("downloadBtn").addEventListener("click", downloadPDF);
+  document.getElementById("whatsappBtn").addEventListener("click", sendWhatsApp);
+  document.getElementById("resultsSelect").addEventListener("change", () => {
     clearSubjects();
     addSubject();
     updateAPS();
   });
-  document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
-  document.getElementById('subjectsContainer').addEventListener('input', updateAPS);
+  document.getElementById("subjectsContainer").addEventListener("input", updateAPS);
 }
 
-// Step navigation
 function showStep(step) {
   currentStep = step;
-  document.querySelectorAll('.step').forEach((el, idx) => {
-    el.style.display = (idx + 1 === step) ? 'block' : 'none';
+  document.querySelectorAll(".step").forEach((el, idx) => {
+    el.style.display = (idx + 1 === step) ? "block" : "none";
+  });
+  updateStepIndicator(step);
+}
+
+function updateStepIndicator(step) {
+  const circles = document.querySelectorAll(".step-circle");
+  circles.forEach((circle, idx) => {
+    circle.classList.toggle("active", idx + 1 === step);
   });
 }
 
 function nextStep(step) {
-  if (validateStep(currentStep)) {
-    showStep(step);
-  }
+  if (validateStep(currentStep)) showStep(step);
 }
 
 function prevStep(step) {
   showStep(step);
 }
 
-// Validation for each step
 function validateStep(step) {
   if (step === 1) {
-    const fullname = document.getElementById('fullname').value.trim();
-    if (!fullname) {
-      alert('Please enter your full name.');
-      return false;
-    }
+    const name = document.getElementById("fullname").value.trim();
+    if (!name) return alert("Enter your full name."), false;
   }
+
   if (step === 2) {
-    const resultsType = document.getElementById('resultsSelect').value;
-    if (!resultsType) {
-      alert('Please select your results type.');
-      return false;
-    }
+    const type = document.getElementById("resultsSelect").value;
+    if (!type) return alert("Select your results type."), false;
     const subjects = getSubjects();
-    if (subjects.length < 5) {
-      alert('Please enter at least 5 subjects and marks.');
-      return false;
-    }
-    for (const sub of subjects) {
-      if (!sub.subject || sub.mark === null || isNaN(sub.mark)) {
-        alert('Please fill in all subject names and marks.');
-        return false;
-      }
-      if (sub.mark < 0 || sub.mark > 100) {
-        alert('Marks must be between 0 and 100.');
-        return false;
+    if (subjects.length < 5) return alert("Enter at least 5 subjects."), false;
+    for (const s of subjects) {
+      if (!s.subject || isNaN(s.mark) || s.mark < 0 || s.mark > 100) {
+        return alert("Check subject names and marks (0–100)."), false;
       }
     }
   }
+
   if (step === 3) {
-    const nsfas = document.getElementById('nsfasSelect').value;
-    if (!nsfas) {
-      alert('Please select NSFAS funding option.');
-      return false;
+    if (!document.getElementById("nsfasSelect").value) {
+      return alert("Select NSFAS option."), false;
     }
-    const checkedInstitutions = Array.from(document.querySelectorAll('.university-checkbox:checked'));
-    if (checkedInstitutions.length === 0) {
-      alert('Please select at least one institution.');
-      return false;
+    if (document.querySelectorAll(".university-checkbox:checked").length === 0) {
+      return alert("Select at least one institution."), false;
+    }
+    if (!document.getElementById("termsCheckbox").checked) {
+      return alert("Agree to the Terms and Conditions."), false;
     }
   }
   return true;
 }
 
-// Subjects logic
 function addSubject() {
-  const container = document.getElementById('subjectsContainer');
-  const row = document.createElement('div');
-  row.classList.add('subject-row');
-  row.style.marginBottom = '10px';
-
+  const row = document.createElement("div");
+  row.className = "subject-row";
   row.innerHTML = `
-    <input type="text" class="form-control subject-name" placeholder="Subject" style="width: 70%; display: inline-block;" />
-    <input type="number" class="form-control subject-mark" placeholder="Mark" min="0" max="100" style="width: 25%; display: inline-block; margin-left: 5px;" />
-    <button type="button" onclick="removeSubject(this)" class="btn btn-danger" style="display: inline-block; margin-left: 5px;">X</button>
+    <input type="text" class="subject-name" placeholder="Subject" />
+    <input type="number" class="subject-mark" placeholder="Mark (0–100)" min="0" max="100" />
+    <button type="button" onclick="removeSubject(this)">❌</button>
   `;
-
-  container.appendChild(row);
+  document.getElementById("subjectsContainer").appendChild(row);
 }
 
-function removeSubject(button) {
-  const row = button.parentElement;
-  row.remove();
+function removeSubject(btn) {
+  btn.parentElement.remove();
   updateAPS();
 }
 
 function clearSubjects() {
-  document.getElementById('subjectsContainer').innerHTML = '';
+  document.getElementById("subjectsContainer").innerHTML = "";
 }
 
 function getSubjects() {
-  const rows = document.querySelectorAll('.subject-row');
-  const subjects = [];
-  rows.forEach(row => {
-    const subject = row.querySelector('.subject-name').value.trim();
-    const markStr = row.querySelector('.subject-mark').value;
-    const mark = markStr === '' ? null : parseInt(markStr, 10);
-    subjects.push({ subject, mark });
+  return Array.from(document.querySelectorAll(".subject-row")).map(row => {
+    const subject = row.querySelector(".subject-name").value.trim();
+    const mark = parseInt(row.querySelector(".subject-mark").value);
+    return { subject, mark };
   });
-  return subjects;
 }
 
-// APS Calculation logic (Example logic, adjust per actual APS rules)
 function calculateAPS(mark) {
   if (mark >= 80) return 7;
   if (mark >= 70) return 6;
@@ -210,187 +190,150 @@ function calculateAPS(mark) {
 
 function updateAPS() {
   const subjects = getSubjects();
-  let totalAPS = 0;
-  subjects.forEach(({ mark }) => {
-    if (mark !== null && !isNaN(mark)) {
-      totalAPS += calculateAPS(mark);
-    }
-  });
-  document.getElementById('totalAps').textContent = totalAPS;
+  const total = subjects.reduce((sum, s) => sum + (isNaN(s.mark) ? 0 : calculateAPS(s.mark)), 0);
+  document.getElementById("totalAps").textContent = total;
 }
 
-// Universities list building
 function buildUniversitiesList() {
-  const container = document.getElementById('universitiesList');
-  container.innerHTML = '';
-
+  const container = document.getElementById("universitiesList");
+  container.innerHTML = "";
   for (const province in provinces) {
-    const provDiv = document.createElement('div');
-    provDiv.classList.add('province-block');
-    provDiv.style.marginBottom = '15px';
-
-    const title = document.createElement('h4');
+    const block = document.createElement("div");
+    block.className = "province-block";
+    const title = document.createElement("h4");
     title.textContent = province;
-    provDiv.appendChild(title);
-
+    block.appendChild(title);
     provinces[province].forEach(inst => {
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.classList.add('university-checkbox');
-      checkbox.dataset.fee = inst.fee;
-      checkbox.value = inst.name;
-      checkbox.id = inst.name.replace(/\s+/g, '_');
-
-      checkbox.addEventListener('change', updateTotalFee);
-
-      const label = document.createElement('label');
-      label.htmlFor = checkbox.id;
-      label.textContent = `${inst.name} (R${inst.fee})`;
-
-      const div = document.createElement('div');
-      div.appendChild(checkbox);
-      div.appendChild(label);
-
-      provDiv.appendChild(div);
+      const id = inst.name.replace(/\s+/g, "_");
+      block.innerHTML += `
+        <div class="university-item">
+          <input type="checkbox" id="${id}" class="university-checkbox" value="${inst.name}" data-fee="${inst.fee}" onchange="updateTotalFee()" />
+          <label for="${id}">${inst.name} (R${inst.fee})</label>
+        </div>
+      `;
     });
-
-    container.appendChild(provDiv);
+    container.appendChild(block);
   }
 }
 
 function updateTotalFee() {
-  const checked = document.querySelectorAll('.university-checkbox:checked');
-  let total = 0;
-  checked.forEach(cb => {
-    total += parseFloat(cb.dataset.fee) || 0;
-  });
-  document.getElementById('totalFee').textContent = total.toFixed(2);
+  const total = Array.from(document.querySelectorAll(".university-checkbox:checked"))
+    .reduce((sum, cb) => sum + parseFloat(cb.dataset.fee), 0);
+  document.querySelectorAll("#totalFee").forEach(el => el.textContent = total.toFixed(2));
 }
 
-// Tracking ID generator
 function generateTrackingID() {
-  const id = 'APP' + Math.floor(100000 + Math.random() * 900000);
-  document.getElementById('trackingId').value = id;
+  document.getElementById("trackingId").value = "APP" + Math.floor(100000 + Math.random() * 900000);
 }
 
-// Dark mode toggle
-function toggleDarkMode() {
-  document.body.classList.toggle('dark-mode');
+function showTermsModal() {
+  const overlay = document.createElement("div");
+  overlay.className = "modal-overlay fade-in";
+  overlay.innerHTML = `
+    <div class="modal">
+      <div class="modal-content">
+        <h3 style="text-align:center;">Terms and Conditions</h3>
+        <p>This portal helps you apply but doesn’t guarantee acceptance. All decisions are made by the institutions. R80 is required for processing and is non-refundable.</p>
+        <div style="text-align:center;"><button onclick="closeTermsModal()">Close</button></div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
 }
 
-// Form data getter
-function getFormData() {
-  const fullname = document.getElementById('fullname').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const resultsType = document.getElementById('resultsSelect').value;
-  const subjects = getSubjects();
-  const nsfas = document.getElementById('nsfasSelect').value;
-  const selectedInstitutions = Array.from(document.querySelectorAll('.university-checkbox:checked')).map(cb => cb.value);
-  const aps = document.getElementById('totalAps').textContent;
-  const totalFee = document.getElementById('totalFee').textContent;
-  const trackingId = document.getElementById('trackingId').value;
-
-  return { fullname, email, resultsType, subjects, nsfas, selectedInstitutions, aps, totalFee, trackingId };
+function closeTermsModal() {
+  document.querySelector(".modal-overlay")?.remove();
 }
 
-// Submission handler
+function addTermsAndConditions() {
+  document.getElementById("termsContainer").innerHTML = `
+    <label><input type="checkbox" id="termsCheckbox" /> I agree to the <a href="#" onclick="showTermsModal()">Terms and Conditions</a></label>
+  `;
+}
+
+function enhanceUniversityListDisplay() {
+  document.querySelectorAll(".province-block").forEach(block => {
+    block.style.border = "1px solid #ccc";
+    block.style.padding = "1rem";
+    block.style.marginBottom = "1rem";
+    block.style.borderRadius = "8px";
+    block.style.backgroundColor = "#f9f9f9";
+  });
+}
+
 function submitApplication(e) {
   e.preventDefault();
-  if (!validateStep(3)) return; // Validate last step
+  if (!validateStep(3)) return;
 
   const data = getFormData();
+  alert(`Thank you ${data.fullname}! Tracking ID: ${data.trackingId}`);
 
-  // Show confirmation
-  alert(`Thank you ${data.fullname}! Your application with Tracking ID ${data.trackingId} has been received.`);
-
-  // Email fallback
   if (data.email) {
-    const mailtoLink = `mailto:${data.email}?subject=SA University Application Confirmation&body=${encodeURIComponent(
-      `Dear ${data.fullname},\n\nThank you for your application.\nYour Tracking ID: ${data.trackingId}\nSelected Institutions: ${data.selectedInstitutions.join(', ')}\nTotal Fee: R${data.totalFee}\n\nRegards,\nSA Uni Portal`
-    )}`;
-    window.location.href = mailtoLink;
+    const subject = `Your Application Summary (Tracking ID: ${data.trackingId})`;
+    const body = `Dear ${data.fullname},\n\nThank you for your application.\nTracking ID: ${data.trackingId}\n\nWe will respond shortly.`;
+    const fallbackEmail = "annualuniversitysapplication@gmail.com";
+    window.location.href = `mailto:${fallbackEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 }
 
-// PDF download (simple styled text PDF)
+function getFormData() {
+  return {
+    fullname: document.getElementById("fullname").value,
+    email: document.getElementById("email").value,
+    resultsType: document.getElementById("resultsSelect").value,
+    subjects: getSubjects(),
+    nsfas: document.getElementById("nsfasSelect").value,
+    selectedInstitutions: Array.from(document.querySelectorAll(".university-checkbox:checked")).map(cb => cb.value),
+    aps: document.getElementById("totalAps").textContent,
+    totalFee: document.getElementById("totalFee").textContent,
+    trackingId: document.getElementById("trackingId").value
+  };
+}
+
 function downloadPDF() {
   const data = getFormData();
-
+  const { jsPDF } = window.jspdf; // ✅ required when using the UMD version
   const doc = new jsPDF();
 
+  const base64Logo = "ChatGPT Image Jul 25, 2025, 02_09_40 PM.png"; // your logo here
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  doc.addImage(base64Logo, 'PNG', pageWidth / 2 - 40, pageHeight / 2 - 40, 80, 80, '', 'FAST');
+
   doc.setFontSize(18);
-  doc.text("SA University Application Summary", 14, 22);
-
+  doc.text("SA University Application Summary", 14, 20);
   doc.setFontSize(12);
-  doc.text(`Name: ${data.fullname}`, 14, 40);
-  doc.text(`Tracking ID: ${data.trackingId}`, 14, 50);
-  doc.text(`Results Type: ${data.resultsType}`, 14, 60);
-  doc.text(`APS Score: ${data.aps}`, 14, 70);
+  doc.text(`Full Name: ${data.fullname}`, 14, 35);
+  doc.text(`Tracking ID: ${data.trackingId}`, 14, 45);
+  doc.text(`Results Type: ${data.resultsType}`, 14, 55);
+  doc.text(`APS: ${data.aps}`, 14, 65);
 
-  doc.text('Subjects and Marks:', 14, 80);
+  doc.text("Subjects:", 14, 75);
   data.subjects.forEach((sub, i) => {
-    doc.text(`- ${sub.subject}: ${sub.mark}`, 20, 90 + i * 10);
+    doc.text(`- ${sub.subject}: ${sub.mark}`, 20, 85 + i * 10);
   });
 
-  doc.text(`Selected Institutions:`, 14, 100 + data.subjects.length * 10);
-  data.selectedInstitutions.forEach((inst, i) => {
-    doc.text(`- ${inst}`, 20, 110 + (data.subjects.length + i) * 10);
+  const offset = 85 + data.subjects.length * 10;
+  doc.text("Institutions:", 14, offset);
+  data.selectedInstitutions.forEach((name, i) => {
+    doc.text(`- ${name}`, 20, offset + 10 + i * 10);
   });
 
-  doc.text(`Total Application Fee: R${data.totalFee}`, 14, 120 + (data.subjects.length + data.selectedInstitutions.length) * 10);
-
-  doc.save('ApplicationSummary.pdf');
+  doc.text(`NSFAS: ${data.nsfas}`, 14, offset + 20 + data.selectedInstitutions.length * 10);
+  doc.text(`Total Fee: R${data.totalFee}`, 14, offset + 30 + data.selectedInstitutions.length * 10);
+  doc.save("ApplicationSummary.pdf");
 }
 
-// WhatsApp submission
+
+
 function sendWhatsApp() {
   const data = getFormData();
-
-  if (!data.fullname) {
-    alert("Please enter your full name before sending.");
-    return;
-  }
-  if (data.selectedInstitutions.length === 0) {
-    alert("Please select at least one institution.");
-    return;
+  if (!data.fullname || data.selectedInstitutions.length === 0) {
+    return alert("Please complete your details and select institutions.");
   }
 
-  const msg = `SA University Application Submission:\n` +
-    `Name: ${data.fullname}\n` +
-    `Tracking ID: ${data.trackingId}\n` +
-    `Results Type: ${data.resultsType}\n` +
-    `APS: ${data.aps}\n` +
-    `Subjects:\n` +
-    data.subjects.map(s => ` - ${s.subject}: ${s.mark}`).join('\n') + `\n` +
-    `Selected Institutions:\n` +
-    data.selectedInstitutions.map(i => ` - ${i}`).join('\n') + `\n` +
-    `Total Fee: R${data.totalFee}\n` +
-    `NSFAS: ${data.nsfas}`;
-
-  // Your WhatsApp number here (international format without +, e.g. 27631234567)
+  const msg = `SA Application:\nName: ${data.fullname}\nTracking ID: ${data.trackingId}\nResults: ${data.resultsType}\nAPS: ${data.aps}\nSubjects:\n${data.subjects.map(s => `- ${s.subject}: ${s.mark}`).join("\n")}\nInstitutions:\n${data.selectedInstitutions.join("\n")}\nFee: R${data.totalFee}\nNSFAS: ${data.nsfas}`;
   const waNumber = "27683683912";
-
-  const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
-  window.open(waUrl, '_blank');
-}
-
-// QR code generation (blue on white)
-function renderQRCode() {
-  const qrContainer = document.createElement('div');
-  qrContainer.id = 'qrCodeContainer';
-  qrContainer.style.textAlign = 'center';
-  qrContainer.style.marginTop = '20px';
-
-  const container = document.querySelector('.container');
-  container.appendChild(qrContainer);
-
-  // Use QRCode.js (https://davidshimjs.github.io/qrcodejs/)
-  const qr = new QRCode(qrContainer, {
-    text: "https://annualapplication.github.io/Unviversity_tvet-application-/",
-    width: 120,
-    height: 120,
-    colorDark: "#0055a5",
-    colorLight: "#ffffff",
-    correctLevel: QRCode.CorrectLevel.H
-  });
+  const waUrl = `https://wa.me/$27683683912?text=${encodeURIComponent(msg)}`;
+  window.open(waUrl, "_blank");
 }

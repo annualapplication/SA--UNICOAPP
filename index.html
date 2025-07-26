@@ -3,57 +3,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SA University Application Portal</title>
+  <title>UNICO Application</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-
+  
+  
 </head>
 <body onload="initPage()">
-
+  <div class="background-logo"></div>
   <header>
-    <h1>University & TVET Application Portal</h1>
-    <button id="darkModeToggle" onclick="toggleDarkMode()">🌙 Toggle Dark Mode</button>
+    <img src="ChatGPT Image Jul 25, 2025, 02_09_40 PM.png" alt="Logo" class="main-logo" />
+    <h1>University and college application</h1>
+    <button id="darkModeToggle">🌙 Toggle Dark Mode</button>
   </header>
 
-  <main class="container">
+  <div class="note fade-in">
+    <strong>Note:</strong> To process your application, a non-refundable fee of <strong>R80</strong> is required. If you want to make payments here is the Capitec Account number: <strong>1843575653</strong>
+  </div>
+
+  <main class="container fade-in">
     <form id="applicationForm">
+
+      <!-- Step Indicator -->
+      <div class="step-indicator">
+        <div class="step-circle active">1</div>
+        <div class="step-circle">2</div>
+        <div class="step-circle">3</div>
+      </div>
 
       <!-- Step 1 -->
       <div class="step" id="step1">
         <h2>Step 1: Personal Info</h2>
-        <div class="mb-3">
-          <label for="fullname">Full Name *</label>
-          <input type="text" id="fullname" class="form-control" required />
-        </div>
-        <div class="mb-3">
-          <label for="email">Email Address (optional)</label>
-          <input type="email" id="email" class="form-control" />
-        </div>
-        <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next</button>
+        <label for="fullname">Full Name and Surname *</label>
+        <input type="text" id="fullname" required />
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" />
+		
+		
+        <label for="email">Contact Number *</label>
+        <input type="Contact Number" id="Contact Number" />
+
+        <button type="button" onclick="nextStep(2)">Next</button>
       </div>
 
       <!-- Step 2 -->
       <div class="step" id="step2" style="display:none;">
         <h2>Step 2: Academic Results</h2>
-        <div class="note">
-          <strong>Note:</strong> If you are currently in Grade 12, enter your <strong>Grade 11 Final Results</strong>.<br />
-          If you've completed Matric, enter your <strong>Final Matric Results</strong>.
-        </div>
         <label for="resultsSelect">Results Type *</label>
-        <select id="resultsSelect" class="form-select mb-3" required>
+        <select id="resultsSelect" required>
           <option value="">Select</option>
           <option>Grade 11</option>
           <option>Grade 12</option>
         </select>
+
         <div id="subjectsContainer"></div>
-        <button type="button" onclick="addSubject()" class="btn btn-outline-primary mt-2 mb-3">Add Another Subject</button>
+        <button type="button" onclick="addSubject()">Add Another Subject</button>
 
         <p><strong>Total APS:</strong> <span id="totalAps">0</span></p>
         <p><strong>Estimated Application Fees:</strong> R<span id="totalFee">0</span></p>
 
-        <button type="button" class="btn btn-secondary" onclick="prevStep(1)">Back</button>
-        <button type="button" class="btn btn-primary" onclick="nextStep(3)">Next</button>
+        <button type="button" onclick="prevStep(1)">Back</button>
+        <button type="button" onclick="nextStep(3)">Next</button>
       </div>
 
       <!-- Step 3 -->
@@ -63,24 +75,40 @@
         <div id="universitiesList"></div>
 
         <label for="nsfasSelect">NSFAS Funding *</label>
-        <select id="nsfasSelect" class="form-select mb-3" required>
+        <select id="nsfasSelect" required>
           <option value="">Select</option>
           <option>Yes</option>
           <option>No</option>
         </select>
 
         <input type="hidden" id="trackingId" />
-
         <p><strong>Total Application Fee:</strong> R<span id="totalFee">0</span></p>
 
-        <button type="button" class="btn btn-secondary" onclick="prevStep(2)">Back</button>
-        <button type="submit" class="btn btn-success">Submit Application</button>
-        <button type="button" id="downloadBtn" class="btn btn-info">Download PDF</button>
-        <button type="button" id="whatsappBtn" class="btn btn-primary">Send via WhatsApp</button>
-      </div>
+        <div id="termsContainer"></div>
 
+        <button type="button" onclick="prevStep(2)">Back</button>
+        <button type="button" id="downloadBtn">Download PDF</button>
+        <button type="button" id="whatsappBtn">Send via WhatsApp</button>
+      </div>
     </form>
+
+   
   </main>
+
+  <footer>
+  <p>Follow us:</p>
+  <div class="social-icons">
+    <a href="https://facebook.com/Siphelelegumbi" target="_blank" class="facebook-icon" title="Facebook">
+      <i class="bi bi-facebook"></i>
+    </a>
+    <a href="https://instagram.com/univ.ersitytvet" target="_blank" class="instagram-icon" title="Instagram">
+      <i class="bi bi-instagram"></i>
+    </a>
+    <a href="https://tiktok.com/@unicoapplication" target="_blank" class="tiktok-icon" title="TikTok">
+      <i class="bi bi-tiktok"></i>
+    </a>
+  </div>
+</footer>
 
   <script src="script.js"></script>
 </body>
