@@ -298,7 +298,7 @@ function downloadPDF() {
   const base64Logo = "ChatGPT Image Jul 25, 2025, 02_09_40 PM.png"; // your logo here
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
-  doc.addImage(base64Logo, 'PNG', pageWidth / 2 - 40, pageHeight / 2 - 40, 80, 80, '', 'FAST');
+  doc.addImage(base64Logo, 'PNG', 20, 40, 170, 170, '', 'FAST');
 
   doc.setFontSize(18);
   doc.text("SA University Application Summary", 14, 20);
@@ -334,6 +334,6 @@ function sendWhatsApp() {
 
   const msg = `SA Application:\nName: ${data.fullname}\nTracking ID: ${data.trackingId}\nResults: ${data.resultsType}\nAPS: ${data.aps}\nSubjects:\n${data.subjects.map(s => `- ${s.subject}: ${s.mark}`).join("\n")}\nInstitutions:\n${data.selectedInstitutions.join("\n")}\nFee: R${data.totalFee}\nNSFAS: ${data.nsfas}`;
   const waNumber = "27683683912";
-  const waUrl = `https://wa.me/$27683683912?text=${encodeURIComponent(msg)}`;
+  const waUrl = `https://wa.me/27683683912?text=${encodeURIComponent(msg)}`;
   window.open(waUrl, "_blank");
 }
