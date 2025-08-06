@@ -27,7 +27,9 @@ const provinces = {
     { name: "Mnambithi TVET College", fee: 0 },
     { name: "Majuba TVET College", fee: 0 },
     { name: "EThekwini TVET College", fee: 0 },
-    { name: "Coastal TVET College", fee: 0 }
+    { name: "Coastal TVET College", fee: 0 },
+	{ name: "Mfolozi TVET College", fee: 0}
+	
   ],
   "Eastern Cape": [
     { name: "Nelson Mandela University", fee: 100 },
@@ -330,6 +332,15 @@ function sendWhatsApp() {
   const data = getFormData();
   if (!data.fullname || data.selectedInstitutions.length === 0) {
     return alert("Please complete your details and select institutions.");
+	document.getElementById("whatsappBtn").addEventListener("click", () => {
+  const checkbox = document.getElementById("termsCheckbox");
+  if (!checkbox.checked) {
+    alert("Please accept the terms and conditions before submitting.");
+    return;
+  }
+
+});
+
   }
 
   const msg = `SA Application:\nName: ${data.fullname}\nTracking ID: ${data.trackingId}\nResults: ${data.resultsType}\nAPS: ${data.aps}\nSubjects:\n${data.subjects.map(s => `- ${s.subject}: ${s.mark}`).join("\n")}\nInstitutions:\n${data.selectedInstitutions.join("\n")}\nFee: R${data.totalFee}\nNSFAS: ${data.nsfas}`;

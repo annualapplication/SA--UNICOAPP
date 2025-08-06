@@ -14,7 +14,7 @@ body {
   max-width: 955px;
   margin: auto;
   padding: 1rem;
-  padding-bottom: 7rem; /* Fix: space for footer visibility */
+  padding-bottom: 10rem; /* Fix: space for footer visibility */
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -183,4 +183,112 @@ body.dark-mode select {
   button {
     width: 100%;
   }
+}
+/* Existing styles remain above this... */
+
+/* Mobile Responsive Enhancements */
+@media screen and (max-width: 768px) {
+  header {
+    padding: 0.5rem;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+  }
+
+  .main-logo {
+    max-width: 40px;
+  }
+
+  .container {
+    padding: 0.8rem;
+    margin: 0 5px;
+    padding-bottom: 5rem; /* space for footer */
+  }
+
+  .note {
+    font-size: 0.9rem;
+  }
+
+  input, select {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  .step-indicator {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .step-circle {
+    width: 26px;
+    height: 26px;
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  header h1 {
+    font-size: 1rem;
+  }
+
+  .container {
+    padding: 0.5rem;
+  }
+
+  .note {
+    font-size: 0.85rem;
+  }
+
+  footer {
+    font-size: 0.75rem;
+    padding: 4px;
+  }
+
+  footer a {
+    margin: 0 5px;
+    font-size: 1rem;
+  }
+
+  .floating-whatsapp {
+    width: 50px;
+    height: 50px;
+    bottom: 80px;
+    right: 15px;
+  }
+}
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.5s ease forwards;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.5s ease forwards;
 }

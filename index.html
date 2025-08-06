@@ -68,33 +68,47 @@
         <button type="button" onclick="nextStep(3)">Next</button>
       </div>
 
-      <!-- Step 3 -->
-      <div class="step" id="step3" style="display:none;">
-        <h2>Step 3: Institutions & NSFAS</h2>
+     <!-- Step 3 -->
+<div class="step" id="step3" style="display:none;">
+  <h2>Step 3: Institutions & NSFAS</h2>
 
-        <div id="universitiesList"></div>
+  <div id="universitiesList"></div>
 
-        <label for="nsfasSelect">NSFAS Funding *</label>
-        <select id="nsfasSelect" required>
-          <option value="">Select</option>
-          <option>Yes</option>
-          <option>No</option>
-        </select>
+  <label for="nsfasSelect">NSFAS Funding *</label>
+  <select id="nsfasSelect" required>
+    <option value="">Select</option>
+    <option>Yes</option>
+    <option>No</option>
+  </select>
 
-        <input type="hidden" id="trackingId" />
-        <p><strong>Total Application Fee:</strong> R<span id="totalFee">0</span></p>
+  <input type="hidden" id="trackingId" />
+  <p><strong>Total Application Fee:</strong> R<span id="totalFee">0</span></p>
 
-        <div id="termsContainer"></div>
+  <!-- Terms and Conditions -->
+  <div id="termsContainer">
+    <h3>Terms and Conditions</h3>
+    <p style="font-size: 0.95em; background: #f8f8f8; padding: 10px; border-radius: 6px;">
+      <strong>Please note:</strong> Your application will <strong>not be processed</strong> if the required non-refundable R80 application fee is not paid. 
+      <br /><br />
+      We are <strong>not liable</strong> if any university or college does not accept your application.
+    </p>
+    <label style="display: flex; align-items: center; gap: 6px; margin-top: 10px;">
+      <input type="checkbox" id="termsCheckbox" required />
+      I have read and agree to the terms and conditions.
+    </label>
+  </div>
 
-        <button type="button" onclick="prevStep(2)">Back</button>
-        <button type="button" id="downloadBtn">Download PDF</button>
-        <button type="button" id="whatsappBtn">Send via WhatsApp</button>
-      </div>
+  <button type="button" onclick="prevStep(2)">Back</button>
+  <button type="button" id="downloadBtn">Download PDF</button>
+  <button type="button" id="whatsappBtn">Send via WhatsApp</button>
+</div>
+
     </form>
 
    
   </main>
 
+  <footer>
   <footer>
   <p>Follow us:</p>
   <div class="social-icons">
@@ -107,6 +121,13 @@
     <a href="https://tiktok.com/@unicoapplication" target="_blank" class="tiktok-icon" title="TikTok">
       <i class="bi bi-tiktok"></i>
     </a>
+    <a href="mailto:annualuniversitysapplication@gmail.com" target="_blank" class="gmail-icon" title="Gmail">
+      <i class="bi bi-envelope"></i>
+    </a>
+  </div>
+  <p>© 2025 Siphelele Buthelezi Web developer</p>
+</footer>
+
   </div>
 </footer>
 
