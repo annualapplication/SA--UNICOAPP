@@ -73,6 +73,42 @@ const provinces = {
 
 let currentStep = 1;
 
+function showStep(stepNumber, direction = "right") {
+  const steps = document.querySelectorAll(".step");
+
+  steps.forEach((step, index) => {
+    step.style.display = "none";
+    step.classList.remove("slide-in-left", "slide-in-right", "active");
+  });
+
+  const newStep = document.getElementById(`step${stepNumber}`);
+  newStep.style.display = "block";
+  newStep.classList.add(`slide-in-${direction}`, "active");
+
+  // Update step indicator
+  const circles = document.querySelectorAll(".step-circle");
+  circles.forEach((circle, i) => {
+    circle.classList.toggle("active", i === stepNumber - 1);
+  });
+
+  currentStep = stepNumber;
+}
+
+function nextStep(stepNumber) {
+  const direction = stepNumber > currentStep ? "right" : "left";
+  showStep(stepNumber, direction);
+}
+
+function prevStep(stepNumber) {
+  const direction = stepNumber < currentStep ? "left" : "right";
+  showStep(stepNumber, direction);
+}
+
+function initPage() {
+  showStep(1);
+}
+
+
 function initPage() {
   generateTrackingID();
   buildUniversitiesList();
