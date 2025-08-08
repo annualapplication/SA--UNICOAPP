@@ -393,3 +393,13 @@ body.dark-mode select {
     right: 15px;
   }
 }
+/* Extra space for buttons above fixed footer on mobile */
+@media screen and (max-width: 600px) {
+  .container {
+    padding-bottom: 7rem; /* More room for buttons */
+  }
+
+  .step.active button:last-child {
+    margin-bottom: 4rem; /* Pushes last button above footer */
+  }
+}
